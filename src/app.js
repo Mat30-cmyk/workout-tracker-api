@@ -2,7 +2,7 @@ console.log("workout-tracker app");
 
 const express = require("express"); // Import express
 const app = express(); // Create an instance of express
-const port = 8000; // puerto de escucha
+const { port } = require('./config/env');
 
 // Inicializacion del servidor y primera ruta
 app.get("/", (req, res) => {
