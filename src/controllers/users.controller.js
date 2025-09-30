@@ -63,7 +63,29 @@ const createUser = (req, res) => {
 
 
 const updateUser = (req, res) => {
-    res.status(200).json({ message: "PUT/PATCH /users/:id - Implementacion pendiente", id: req.params.id, body: req.body });
+    // Commit 4: Actualización con PUT y PATCH
+    const { id } = req.params;
+    const { name, email, role } = req.body;
+
+    const index = users.findIndex(u => u.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Validación simplificada para PUT/PATCH
+    if (req.method === 'PUT' && (!name || !email)) {
+        return res.status(400).json({ error: 'PUT requiere Name y Email' });
+    }
+
+    users[index] = {
+        ...users[index], // Conserva datos previos
+        ...(name && { name }),
+        ...(email && { email }),
+        ...(role && { role }),
+    };
+
+    res.status(200).json(users[index]);
 };
 
 const deleteUser = (req, res) => {
