@@ -22,17 +22,34 @@ const users = [
     { id: "20", name: "Alejandra Díaz", email: "alejandra.diaz@example.com", role: "user", createdAt: new Date().toISOString() }
 ];
 
+// Nueva función: Validacion de formato de ID
+const isValidId = (id) => id && (typeof id === 'string'); // Simplificado: solo chequea que sea string
+
 const getUsers = (req, res) => {
-    // Commit 2: Implementación GET lista
-    res.status(200).json(users);
+    // Commit 6: Validacion de Query Strings (ejemplo: filtro por rol)
+    const { role } = req.query;
+    let filteredUsers = users;
+
+    if (role) {
+        filteredUsers = users.filter(u => u.role === role);
+    }
+
+    // Estados HTTP (200 OK)
+    res.status(200).json(filteredUsers);
 };
 
 const getUserById = (req, res) => {
-    // Commit 2: Implementación GET individual
     const { id } = req.params;
+
+    // Commit 6: Validacion de parametros (ID)
+    if (!isValidId(id)) {
+        return res.status(400).json({ error: 'ID de usuario invalido' });
+    }
+
     const user = users.find(u => u.id === id);
 
     if (!user) {
+        // Estado HTTP (404 Not Found)
         return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
