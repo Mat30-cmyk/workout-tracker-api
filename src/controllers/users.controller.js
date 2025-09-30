@@ -89,7 +89,22 @@ const updateUser = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
-    res.status(204).json({ message: "DELETE /users/:id - Implementacion pendiente", id: req.params.id });
+    // Commit 5: Eliminación con DELETE
+    const { id } = req.params;
+    const initialLength = users.length;
+
+    // Filtra el array, manteniendo solo los que NO coinciden con el ID
+    const newUsers = users.filter(u => u.id !== id);
+
+    if (newUsers.length === initialLength) {
+        return res.status(404).json({ error: 'Usuario no encontrado para eliminar' });
+    }
+
+    // Actualiza el array 'users' (simulando la eliminación en BD)
+    users.length = 0; // Vacía el array
+    users.push(...newUsers); // Llena con el nuevo array
+
+    res.status(204).send(); // 204 No Content para eliminación exitosa
 };
 
 module.exports = {
