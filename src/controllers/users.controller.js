@@ -23,11 +23,20 @@ const users = [
 ];
 
 const getUsers = (req, res) => {
-    res.status(200).json({ message: "GET /users (lista) - Implementacion pendiente", users });
+    // Commit 2: Implementación GET lista
+    res.status(200).json(users);
 };
 
 const getUserById = (req, res) => {
-    res.status(200).json({ message: "GET /users/:id - Implementacion pendiente", id: req.params.id });
+    // Commit 2: Implementación GET individual
+    const { id } = req.params;
+    const user = users.find(u => u.id === id);
+
+    if (!user) {
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.status(200).json(user);
 };
 
 const createUser = (req, res) => {
