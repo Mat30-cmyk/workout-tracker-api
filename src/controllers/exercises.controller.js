@@ -40,7 +40,25 @@ const getExerciseById = (req, res) => {
 };
 
 const createExercise = (req, res) => {
-    res.status(201).json({ message: "POST /exercises - Implementacion pendiente", body: req.body });
+    // Commit 3: Creación de recursos con POST
+    const { name, muscleGroup, category, description } = req.body;
+
+    // Validación básica
+    if (!name || !muscleGroup || !category) {
+        return res.status(400).json({ error: 'Name, muscleGroup, y category son requeridos' });
+    }
+
+    const newExercise = {
+        id: `e${Date.now()}`, // ID temporal
+        name,
+        muscleGroup,
+        category,
+        description: description || ''
+    };
+
+    exercises.push(newExercise);
+
+    res.status(201).json(newExercise);
 };
 
 const putExercise = (req, res) => {
