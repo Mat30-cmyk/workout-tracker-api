@@ -23,8 +23,16 @@ let exercises = [
 ];
 
 const getExercises = (req, res) => {
-    // Commit 2: Implementación GET lista
-    res.status(200).json(exercises);
+    // Commit 6: Validacion de Query Strings (filtro por muscleGroup)
+    const { muscleGroup } = req.query;
+    let filtered = exercises;
+
+    if (muscleGroup) {
+        // Filtra sin distinguir mayúsculas/minúsculas
+        filtered = exercises.filter(e => e.muscleGroup.toLowerCase() === muscleGroup.toLowerCase());
+    }
+
+    res.status(200).json(filtered);
 };
 
 const getExerciseById = (req, res) => {
