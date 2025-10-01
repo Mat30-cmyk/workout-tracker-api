@@ -31,11 +31,20 @@ let workoutSchedules = [
 ];
 
 const getWorkoutSchedules = (req, res) => {
-    res.status(200).json({ message: "GET /workout-schedules (lista) - Implementacion pendiente", workoutSchedules });
+    // Commit 2: Implementación GET lista
+    res.status(200).json(workoutSchedules);
 };
 
 const getWorkoutScheduleById = (req, res) => {
-    res.status(200).json({ message: "GET /workout-schedules/:id - Implementacion pendiente", id: req.params.id });
+    // Commit 2: Implementación GET individual
+    const targetId = String(req.params.id); 
+    const schedule = workoutSchedules.find(s => s.id === targetId);
+
+    if (!schedule) {
+        return res.status(404).json({ error: 'Programación de entrenamiento no encontrada' });
+    }
+
+    res.status(200).json(schedule);
 };
 
 const createWorkoutSchedule = (req, res) => {
