@@ -23,8 +23,16 @@ let workoutPlans = [
 ];
 
 const getWorkoutPlans = (req, res) => {
-    // Commit 2: Implementación GET lista
-    res.status(200).json(workoutPlans);
+    // Commit 6: Validacion de Query Strings (ejemplo: filtro por userId)
+    const { userId } = req.query;
+    let filtered = workoutPlans;
+
+    if (userId) {
+        // Asume que userId se pasa como string
+        filtered = workoutPlans.filter(p => p.userId === userId);
+    }
+
+    res.status(200).json(filtered);
 };
 
 const getWorkoutPlanById = (req, res) => {
