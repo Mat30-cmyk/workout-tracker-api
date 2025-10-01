@@ -88,7 +88,17 @@ const patchWorkoutExercise = (req, res) => {
 
 // DELETE /api/v1/workout-exercises/:id
 const deleteWorkoutExercise = (req, res) => {
-    res.status(204).json({ message: "DELETE /workout-exercises/:id - Implementacion pendiente", id: req.params.id });
+    // Commit 4: Implementación DELETE (Eliminación/Quitar)
+    const targetId = String(req.params.id);
+    const initialLength = workoutExercises.length;
+
+    workoutExercises = workoutExercises.filter(we => we.id !== targetId);
+
+    if (workoutExercises.length === initialLength) {
+        return res.status(404).json({ error: 'Asociación Ejercicio-Plan no encontrada para eliminar' });
+    }
+
+    res.status(204).send(); // 204 No Content
 };
 
 module.exports = {
