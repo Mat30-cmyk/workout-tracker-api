@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const plansController = require('../../controllers/workoutPlans.controller');
 const workoutExercisesController = require('../../controllers/workoutExercises.controller');
+const usersController = require('../../controllers/workoutReports.controller');
+
+// 3. GET /api/v1/workoutPlans/:planId/workout-reports
+router.get('/:planId/workout-reports', reportsController.getReportsByPlan);
 
 // RUTA ANIDADA para POST (Commit 1)
 router.post('/:planId/exercises', workoutExercisesController.associateExerciseToPlan); // POST /api/v1/workoutPlans/:planId/exercises
