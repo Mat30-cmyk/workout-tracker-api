@@ -23,11 +23,20 @@ let workoutPlans = [
 ];
 
 const getWorkoutPlans = (req, res) => {
-    res.status(200).json({ message: "GET /workout-plans (lista) - Implementacion pendiente", workoutPlans });
+    // Commit 2: Implementación GET lista
+    res.status(200).json(workoutPlans);
 };
 
 const getWorkoutPlanById = (req, res) => {
-    res.status(200).json({ message: "GET /workout-plans/:id - Implementacion pendiente", id: req.params.id });
+    // Commit 2: Implementación GET individual
+    const targetId = String(req.params.id); 
+    const plan = workoutPlans.find(p => p.id === targetId);
+
+    if (!plan) {
+        return res.status(404).json({ error: 'Plan de entrenamiento no encontrado' });
+    }
+
+    res.status(200).json(plan);
 };
 
 const createWorkoutPlan = (req, res) => {
