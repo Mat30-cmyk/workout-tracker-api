@@ -125,3 +125,32 @@ API RESTful para el seguimiento de entrenamientos.
   "startTime": "06:00",
   "durationMinutes": 60
 }
+
+# 🏋️ Workout Tracker API - v1 (Recurso WorkoutReports - SOLO LECTURA)
+
+## Endpoints de Reportes de Sesión (Lectura Analítica)
+
+| Método | Ruta | Descripción | Reporte |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/v1/workout-reports` | Lista todos los logs de sesiones terminadas. | General |
+| `GET` | `/api/v1/workout-reports?date=2025-10-02` | Filtro por fecha. | General |
+| `GET` | `/api/v1/users/:id/workout-reports` | Logs de un **Usuario** específico. | Por Usuario |
+| `GET` | `/api/v1/workout-plans/:id/workout-reports` | Logs de un **Plan** específico. | Por Plan |
+| `GET` | `/api/v1/workout-schedules/:id/workout-reports` | Log de una **Programación** específica. | Por Schedule |
+
+---
+### Ejemplo de Response
+**Response (200 OK):**
+```json
+[
+  {
+    "id": "r1",
+    "userId": "1",
+    "planId": "wp1",
+    "scheduleId": "ws1",
+    "date": "2025-10-02",
+    "totalDuration": 60,
+    "caloriesBurned": 350,
+    "notes": "Full Body exitoso."
+  }
+]

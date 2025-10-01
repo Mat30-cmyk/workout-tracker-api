@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const usersController = require('../../controllers/users.controller');
-const usersController = require('../../controllers/workoutReports.controller');
+const reportsController = require('../../controllers/workoutReports.controller');
 
 // 2. GET /api/v1/users/:userId/workout-reports
 router.get('/:userId/workout-reports', reportsController.getReportsByUser);
