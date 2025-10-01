@@ -24,8 +24,21 @@ let workoutReports = [
 
 // 1. GET /api/v1/workout-reports
 const getGeneralReports = (req, res) => {
-    // Commit 2: Implementación GET lista
-    res.status(200).json(workoutReports);
+    // Commit 6: Validacion de Query Strings (ej. filtro por fecha)
+    const { date } = req.query;
+    let filtered = workoutReports;
+
+    if (date) {
+        // Asumiendo formato de fecha ISO simple (YYYY-MM-DD)
+        filtered = filtered.filter(r => r.date === date);
+    }
+    
+    // Si no se encuentran reportes con el filtro
+    if (filtered.length === 0) {
+        return res.status(200).json({ message: 'No hay reportes que coincidan con los criterios.' });
+    }
+
+    res.status(200).json(filtered);
 };
 
 // 2. GET /api/v1/users/:userId/workout-reports
