@@ -32,8 +32,28 @@ let workoutExercises = [
 
 // POST /api/v1/workout-plans/:planId/exercises
 const associateExerciseToPlan = (req, res) => {
-    // Nota: Aquí usamos req.params.planId para la FK, incluso si el cuerpo la contiene
-    res.status(201).json({ message: "POST /workout-plans/:planId/exercises - Implementacion pendiente", planId: req.params.planId, body: req.body });
+    // Commit 2: Implementación POST (Asociación)
+    const urlPlanId = req.params.planId;
+    const { exerciseId, sets, reps } = req.body;
+
+    // Validación: requiere FKs y métricas clave
+    if (!urlPlanId || !exerciseId || sets === undefined || reps === undefined) {
+        return res.status(400).json({ error: 'planId (en URL), exerciseId, sets, y reps son requeridos' });
+    }
+
+    const newAssociation = {
+        id: `we${Date.now()}`, 
+        planId: String(urlPlanId),
+        exerciseId: String(exerciseId),
+        sets: Number(sets),
+        reps: Number(reps),
+        weight: req.body.weight !== undefined ? Number(req.body.weight) : 0,
+        notes: req.body.notes || ''
+    };
+
+    workoutExercises.push(newAssociation);
+
+    res.status(201).json(newAssociation);
 };
 
 // PATCH /api/v1/workout-exercises/:id
