@@ -57,7 +57,16 @@ const getReportsByPlan = (req, res) => {
 
 // 4. GET /api/v1/workoutSchedules/:scheduleId/workout-reports
 const getReportsBySchedule = (req, res) => {
-    res.status(200).json({ message: "GET /workout-schedules/:scheduleId/workout-reports - Implementacion pendiente", scheduleId: req.params.scheduleId });
+    // Commit 5: Implementación GET por Schedule
+    const targetScheduleId = req.params.scheduleId;
+    // Como un Schedule solo debería tener 0 o 1 Reporte, usamos find
+    const report = workoutReports.find(r => r.scheduleId === targetScheduleId);
+
+    if (!report) {
+         return res.status(404).json({ error: 'Reporte para esta Programación no encontrado.' });
+    }
+
+    res.status(200).json(report); // Devolvemos el objeto, no un array
 };
 
 module.exports = {
