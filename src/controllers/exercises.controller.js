@@ -111,7 +111,18 @@ const patchExercise = (req, res) => {
 };
 
 const deleteExercise = (req, res) => {
-    res.status(204).json({ message: "DELETE /exercises/:id - Implementacion pendiente", id: req.params.id });
+    // Commit 5: Eliminación con DELETE
+    const targetId = String(req.params.id);
+    const initialLength = exercises.length;
+
+    // Actualiza el array 'exercises'
+    exercises = exercises.filter(e => e.id !== targetId);
+
+    if (exercises.length === initialLength) {
+        return res.status(404).json({ error: 'Ejercicio no encontrado para eliminar' });
+    }
+
+    res.status(204).send(); // 204 No Content
 };
 
 module.exports = {
