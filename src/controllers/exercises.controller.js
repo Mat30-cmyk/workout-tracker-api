@@ -23,11 +23,20 @@ let exercises = [
 ];
 
 const getExercises = (req, res) => {
-    res.status(200).json({ message: "GET /exercises (lista) - Implementacion pendiente", exercises });
+    // Commit 2: Implementación GET lista
+    res.status(200).json(exercises);
 };
 
 const getExerciseById = (req, res) => {
-    res.status(200).json({ message: "GET /exercises/:id - Implementacion pendiente", id: req.params.id });
+    // Commit 2: Implementación GET individual
+    const targetId = String(req.params.id); 
+    const exercise = exercises.find(e => e.id === targetId);
+
+    if (!exercise) {
+        return res.status(404).json({ error: 'Ejercicio no encontrado' });
+    }
+
+    res.status(200).json(exercise);
 };
 
 const createExercise = (req, res) => {
