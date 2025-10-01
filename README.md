@@ -59,13 +59,13 @@ API RESTful para el seguimiento de entrenamientos.
 
 | Método | Ruta | Descripción | Códigos de Estado |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/v1/workout-plans` | Obtener la lista de todos los planes. | `200` OK |
-| `GET` | `/api/v1/workout-plans?userId=1` | Filtrar planes por ID de usuario. | `200` OK |
-| `GET` | `/api/v1/workout-plans/:id` | Detalle del plan. | `200` OK, `404` Not Found |
-| `POST` | `/api/v1/workout-plans` | Crear plan. | `201` Created, `400` Bad Request |
-| `PUT` | `/api/v1/workout-plans/:id` | Reemplazo COMPLETO del plan. | `200` OK, `404` Not Found, `400` Bad Request |
-| `PATCH` | `/api/v1/workout-plans/:id` | Actualización PARCIAL del plan. | `200` OK, `404` Not Found |
-| `DELETE` | `/api/v1/workout-plans/:id` | Eliminar plan. | `204` No Content, `404` Not Found |
+| `GET` | `/api/v1/workoutPlans` | Obtener la lista de todos los planes. | `200` OK |
+| `GET` | `/api/v1/workoutPlans?userId=1` | Filtrar planes por ID de usuario. | `200` OK |
+| `GET` | `/api/v1/workoutPlans/:id` | Detalle del plan. | `200` OK, `404` Not Found |
+| `POST` | `/api/v1/workoutPlans` | Crear plan. | `201` Created, `400` Bad Request |
+| `PUT` | `/api/v1/workoutPlans/:id` | Reemplazo COMPLETO del plan. | `200` OK, `404` Not Found, `400` Bad Request |
+| `PATCH` | `/api/v1/workoutPlans/:id` | Actualización PARCIAL del plan. | `200` OK, `404` Not Found |
+| `DELETE` | `/api/v1/workoutPlans/:id` | Eliminar plan. | `204` No Content, `404` Not Found |
 
 ---
 ### Ejemplos de Request/Response
