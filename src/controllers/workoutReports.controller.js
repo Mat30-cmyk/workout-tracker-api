@@ -44,7 +44,15 @@ const getReportsByUser = (req, res) => {
 
 // 3. GET /api/v1/workoutPlans/:planId/workout-reports
 const getReportsByPlan = (req, res) => {
-    res.status(200).json({ message: "GET /workout-plans/:planId/workout-reports - Implementacion pendiente", planId: req.params.planId });
+    // Commit 4: Implementación GET por Plan
+    const targetPlanId = req.params.planId;
+    const filteredReports = workoutReports.filter(r => r.planId === targetPlanId);
+
+    if (filteredReports.length === 0) {
+         return res.status(200).json([]);
+    }
+
+    res.status(200).json(filteredReports);
 };
 
 // 4. GET /api/v1/workoutSchedules/:scheduleId/workout-reports
