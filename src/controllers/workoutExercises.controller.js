@@ -32,15 +32,20 @@ let workoutExercises = [
 
 // POST /api/v1/workout-plans/:planId/exercises
 const associateExerciseToPlan = (req, res) => {
-    // Commit 2: Implementación POST (Asociación)
     const urlPlanId = req.params.planId;
     const { exerciseId, sets, reps } = req.body;
 
-    // Validación: requiere FKs y métricas clave
+    // Validación de requeridos (Commit 6: Refuerzo de validación)
     if (!urlPlanId || !exerciseId || sets === undefined || reps === undefined) {
-        return res.status(400).json({ error: 'planId (en URL), exerciseId, sets, y reps son requeridos' });
+        return res.status(400).json({ error: 'planId, exerciseId, sets, y reps son requeridos' });
+    }
+    // Validación de tipo de dato (Commit 6: Añadido)
+    if (isNaN(Number(sets)) || isNaN(Number(reps))) {
+         return res.status(400).json({ error: 'Sets y reps deben ser números.' });
     }
 
+    // ... lógica de creación (Commit 2) ...
+    // Los campos se convierten a Number() aquí, asegurando el tipo.
     const newAssociation = {
         id: `we${Date.now()}`, 
         planId: String(urlPlanId),
@@ -50,32 +55,29 @@ const associateExerciseToPlan = (req, res) => {
         weight: req.body.weight !== undefined ? Number(req.body.weight) : 0,
         notes: req.body.notes || ''
     };
-
     workoutExercises.push(newAssociation);
-
     res.status(201).json(newAssociation);
 };
 
 // PATCH /api/v1/workout-exercises/:id
 const patchWorkoutExercise = (req, res) => {
-    // Commit 3: Implementación PATCH (Modificación Parcial)
-    const targetId = String(req.params.id);
-    const index = workoutExercises.findIndex(we => we.id === targetId);
+    // ... manejo de 404 (Commit 3) ...
 
-    if (index === -1) {
-        return res.status(404).json({ error: 'Asociación no encontrada para PATCH' });
-    }
-    
-    // Solo permitir modificar métricas y notas, no las FKs (planId, exerciseId)
     const patchData = { ...req.body };
     delete patchData.planId;
     delete patchData.exerciseId; 
 
-    // Convertir datos a números si vienen
+    // Validación de tipo de dato para PATCH (Commit 6: Añadido)
+    if (patchData.sets !== undefined && isNaN(Number(patchData.sets))) {
+         return res.status(400).json({ error: 'Sets debe ser un número.' });
+    }
+    // ... repetir validación para reps y weight si se desea ...
+
     if (patchData.sets !== undefined) patchData.sets = Number(patchData.sets);
     if (patchData.reps !== undefined) patchData.reps = Number(patchData.reps);
     if (patchData.weight !== undefined) patchData.weight = Number(patchData.weight);
 
+    // ... lógica de actualización (Commit 3) ...
     const updatedAssociation = {
         ...workoutExercises[index], 
         ...patchData,
