@@ -129,7 +129,17 @@ const patchWorkoutSchedule = (req, res) => {
 };
 
 const deleteWorkoutSchedule = (req, res) => {
-    res.status(204).json({ message: "DELETE /workout-schedules/:id - Implementacion pendiente", id: req.params.id });
+    // Commit 5: Eliminación con DELETE
+    const targetId = String(req.params.id);
+    const initialLength = workoutSchedules.length;
+
+    workoutSchedules = workoutSchedules.filter(s => s.id !== targetId);
+
+    if (workoutSchedules.length === initialLength) {
+        return res.status(404).json({ error: 'Programación no encontrada para eliminar' });
+    }
+
+    res.status(204).send(); // 204 No Content
 };
 
 module.exports = {
