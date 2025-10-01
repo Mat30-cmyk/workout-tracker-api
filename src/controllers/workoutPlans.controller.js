@@ -40,7 +40,25 @@ const getWorkoutPlanById = (req, res) => {
 };
 
 const createWorkoutPlan = (req, res) => {
-    res.status(201).json({ message: "POST /workout-plans - Implementacion pendiente", body: req.body });
+    // Commit 3: Creación de recursos con POST
+    const { userId, namePlan } = req.body;
+
+    // Validación básica
+    if (!userId || !namePlan) {
+        return res.status(400).json({ error: 'ID de usuario y namePlan son requeridos' });
+    }
+
+    const newPlan = {
+        id: `wp${Date.now()}`, 
+        userId: String(userId),
+        name: namePlan,
+        dateCreated: new Date().toISOString().split('T')[0],
+        exercisesCount: 0 // Inicialmente sin ejercicios
+    };
+
+    workoutPlans.push(newPlan);
+
+    res.status(201).json(newPlan);
 };
 
 const putWorkoutPlan = (req, res) => {
