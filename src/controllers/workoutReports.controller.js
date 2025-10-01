@@ -24,7 +24,8 @@ let workoutReports = [
 
 // 1. GET /api/v1/workout-reports
 const getGeneralReports = (req, res) => {
-    res.status(200).json({ message: "GET /workout-reports (General) - Implementacion pendiente", workoutReports });
+    // Commit 2: Implementación GET lista
+    res.status(200).json(workoutReports);
 };
 
 // 2. GET /api/v1/users/:userId/workout-reports
