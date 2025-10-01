@@ -4,5 +4,6 @@ const usersRoutes = require('./users.routes');
 
 // Montar rutas de recursos
 router.use('/users', usersRoutes);
+router.use('/exercises', exercisesRoutes);
 
 module.exports = router;
