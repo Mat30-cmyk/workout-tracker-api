@@ -62,11 +62,52 @@ const createExercise = (req, res) => {
 };
 
 const putExercise = (req, res) => {
-    res.status(200).json({ message: "PUT /exercises/:id - Implementacion pendiente", id: req.params.id, body: req.body });
+    // Commit 4: Actualización COMPLETA de PUT
+    const targetId = String(req.params.id); 
+    const index = exercises.findIndex(e => e.id === targetId);
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Ejercicio no encontrado para PUT' });
+    }
+
+    const { name, muscleGroup, category, description } = req.body;
+    
+    // VALIDACIÓN ESTRICTA: PUT requiere los campos clave
+    if (!name || !muscleGroup || !category) {
+        return res.status(400).json({ error: 'PUT requiere la representación completa: name, muscleGroup, y category.' });
+    }
+
+    // Reemplazo completo, preservando el ID.
+    const updatedExercise = {
+        name,
+        muscleGroup,
+        category,
+        description: description || '',
+        id: targetId, 
+    };
+
+    exercises[index] = updatedExercise;
+    res.status(200).json(updatedExercise);
 };
 
 const patchExercise = (req, res) => {
-    res.status(200).json({ message: "PATCH /exercises/:id - Implementacion pendiente", id: req.params.id, body: req.body });
+    // Commit 4: Actualización de PATCH
+    const targetId = String(req.params.id);
+    const index = exercises.findIndex(e => e.id === targetId);
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Ejercicio no encontrado para PATCH' });
+    }
+
+    // Actualización parcial: combina lo existente con los campos enviados
+    const updatedExercise = {
+        ...exercises[index], // Mantiene todo lo que estaba
+        ...req.body,         // Sobreescribe solo los campos enviados
+        id: targetId,
+    };
+    
+    exercises[index] = updatedExercise;
+    res.status(200).json(updatedExercise);
 };
 
 const deleteExercise = (req, res) => {
