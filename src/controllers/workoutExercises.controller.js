@@ -65,7 +65,13 @@ const patchWorkoutExercise = (req, res) => {
 
     const patchData = { ...req.body };
     delete patchData.planId;
-    delete patchData.exerciseId; 
+    delete patchData.exerciseId;
+    const targetId = String(req.params.id);
+    const index = workoutExercises.findIndex(we => we.id === targetId); 
+    
+    if (index === -1) {
+        return res.status(404).json({ error: 'Asociación no encontrada para PATCH' });
+    } 
 
     // Validación de tipo de dato para PATCH (Commit 6: Añadido)
     if (patchData.sets !== undefined && isNaN(Number(patchData.sets))) {
