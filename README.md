@@ -26,3 +26,29 @@ API RESTful para el seguimiento de entrenamientos.
   "email": "ana@example.com",
   "role": "user"
 }
+
+# 🏋️ Workout Tracker API - v1 (Recurso Exercises)
+
+## Endpoints de Ejercicios (`/api/v1/exercises`)
+
+| Método | Ruta | Descripción | Códigos de Estado |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/v1/exercises` | Obtener la lista de todos los ejercicios. | `200` OK |
+| `GET` | `/api/v1/exercises?muscleGroup=piernas` | Filtrar ejercicios por grupo muscular. | `200` OK |
+| `GET` | `/api/v1/exercises/:id` | Obtener un ejercicio por ID. | `200` OK, `404` Not Found |
+| `POST` | `/api/v1/exercises` | Crear un nuevo ejercicio. | `201` Created, `400` Bad Request |
+| `PUT` | `/api/v1/exercises/:id` | **Reemplazar (Actualización COMPLETA)**. | `200` OK, `404` Not Found, `400` Bad Request (si faltan campos clave) |
+| `PATCH` | `/api/v1/exercises/:id` | **Actualizar PARCIALMENTE**. | `200` OK, `404` Not Found |
+| `DELETE` | `/api/v1/exercises/:id` | Eliminar un ejercicio. | `204` No Content, `404` Not Found |
+
+---
+### Ejemplos de Request/Response
+#### 1. Crear Ejercicio (`POST /api/v1/exercises`)
+**Request:**
+```json
+{
+  "name": "Remo con Mancuerna",
+  "muscleGroup": "Espalda",
+  "category": "Fuerza",
+  "description": "Remo a un brazo para desarrollar dorsales."
+}
