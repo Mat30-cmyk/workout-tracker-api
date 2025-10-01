@@ -58,7 +58,32 @@ const associateExerciseToPlan = (req, res) => {
 
 // PATCH /api/v1/workout-exercises/:id
 const patchWorkoutExercise = (req, res) => {
-    res.status(200).json({ message: "PATCH /workout-exercises/:id - Implementacion pendiente", id: req.params.id, body: req.body });
+    // Commit 3: Implementación PATCH (Modificación Parcial)
+    const targetId = String(req.params.id);
+    const index = workoutExercises.findIndex(we => we.id === targetId);
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Asociación no encontrada para PATCH' });
+    }
+    
+    // Solo permitir modificar métricas y notas, no las FKs (planId, exerciseId)
+    const patchData = { ...req.body };
+    delete patchData.planId;
+    delete patchData.exerciseId; 
+
+    // Convertir datos a números si vienen
+    if (patchData.sets !== undefined) patchData.sets = Number(patchData.sets);
+    if (patchData.reps !== undefined) patchData.reps = Number(patchData.reps);
+    if (patchData.weight !== undefined) patchData.weight = Number(patchData.weight);
+
+    const updatedAssociation = {
+        ...workoutExercises[index], 
+        ...patchData,
+        id: targetId, 
+    };
+
+    workoutExercises[index] = updatedAssociation;
+    res.status(200).json(updatedAssociation);
 };
 
 // DELETE /api/v1/workout-exercises/:id
