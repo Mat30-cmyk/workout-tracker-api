@@ -30,7 +30,16 @@ const getGeneralReports = (req, res) => {
 
 // 2. GET /api/v1/users/:userId/workout-reports
 const getReportsByUser = (req, res) => {
-    res.status(200).json({ message: "GET /users/:userId/workout-reports - Implementacion pendiente", userId: req.params.userId });
+    // Commit 3: Implementación GET por Usuario
+    const targetUserId = req.params.userId;
+    const filteredReports = workoutReports.filter(r => r.userId === targetUserId);
+
+    if (filteredReports.length === 0) {
+         // Se puede devolver 200 con un array vacío o 404 si el usuario no tiene reportes
+         return res.status(200).json([]);
+    }
+
+    res.status(200).json(filteredReports);
 };
 
 // 3. GET /api/v1/workoutPlans/:planId/workout-reports
