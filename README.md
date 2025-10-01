@@ -76,3 +76,25 @@ API RESTful para el seguimiento de entrenamientos.
   "userId": "1",
   "namePlan": "Rutina de Brazos Express"
 }
+
+# 🏋️ Workout Tracker API - v1 (Recurso WorkoutExercise)
+
+## Endpoints de Asociación Ejercicio-Plan (`/api/v1/workout-plans/:planId/exercises` y `/api/v1/workout-exercises`)
+
+| Método | Ruta | Descripción | Códigos de Estado |
+| :--- | :--- | :--- | :--- |
+| **`POST`** | `/api/v1/workout-plans/:planId/exercises` | **Asociar/Añadir** un ejercicio a un plan con métricas (Sets/Reps). | `201` Created, `400` Bad Request |
+| **`PATCH`** | `/api/v1/workout-exercises/:id` | **Modificar** los parámetros (Sets, Reps, Peso) de un ejercicio ya asociado. | `200` OK, `404` Not Found, `400` Bad Request |
+| **`DELETE`**| `/api/v1/workout-exercises/:id` | **Quitar** un ejercicio de un plan. | `204` No Content, `404` Not Found |
+
+---
+### Ejemplos de Request/Response
+#### 1. Asociar Ejercicio (`POST /api/v1/workout-plans/wp1/exercises`)
+**Request:**
+```json
+{
+  "exerciseId": "e3",
+  "sets": 3,
+  "reps": 12,
+  "weight": 50
+}
