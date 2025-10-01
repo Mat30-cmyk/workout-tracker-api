@@ -3,6 +3,8 @@ console.log("workout-tracker app");
 const express = require("express"); // Import express
 const app = express(); // Create an instance of express
 const { port } = require('./config/env');
+const routes = require('./routes');
+
 
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); 
