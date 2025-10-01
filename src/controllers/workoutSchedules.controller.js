@@ -48,7 +48,27 @@ const getWorkoutScheduleById = (req, res) => {
 };
 
 const createWorkoutSchedule = (req, res) => {
-    res.status(201).json({ message: "POST /workout-schedules - Implementacion pendiente", body: req.body });
+    // Commit 3: Creación de recursos con POST
+    const { userId, planId, date, startTime, durationMinutes } = req.body;
+
+    // Validación básica
+    if (!userId || !planId || !date || !startTime || durationMinutes === undefined) {
+        return res.status(400).json({ error: 'userId, planId, date, startTime, y durationMinutes son requeridos' });
+    }
+
+    const newSchedule = {
+        id: `ws${Date.now()}`, 
+        userId: String(userId),
+        planId: String(planId),
+        date: String(date),
+        startTime: String(startTime),
+        durationMinutes: Number(durationMinutes),
+        status: req.body.status || 'scheduled' // Estado por defecto
+    };
+
+    workoutSchedules.push(newSchedule);
+
+    res.status(201).json(newSchedule);
 };
 
 const putWorkoutSchedule = (req, res) => {
