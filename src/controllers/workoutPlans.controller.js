@@ -118,7 +118,17 @@ const patchWorkoutPlan = (req, res) => {
 };
 
 const deleteWorkoutPlan = (req, res) => {
-    res.status(204).json({ message: "DELETE /workout-plans/:id - Implementacion pendiente", id: req.params.id });
+    // Commit 5: Eliminación con DELETE
+    const targetId = String(req.params.id);
+    const initialLength = workoutPlans.length;
+
+    workoutPlans = workoutPlans.filter(p => p.id !== targetId);
+
+    if (workoutPlans.length === initialLength) {
+        return res.status(404).json({ error: 'Plan no encontrado para eliminar' });
+    }
+
+    res.status(204).send(); // 204 No Content
 };
 
 module.exports = {
