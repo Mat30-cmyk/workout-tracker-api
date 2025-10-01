@@ -31,8 +31,19 @@ let workoutSchedules = [
 ];
 
 const getWorkoutSchedules = (req, res) => {
-    // Commit 2: Implementación GET lista
-    res.status(200).json(workoutSchedules);
+    // Commit 6: Validacion de Query Strings (filtro por userId y status)
+    const { userId, status } = req.query;
+    let filtered = workoutSchedules;
+
+    if (userId) {
+        filtered = filtered.filter(s => s.userId === userId);
+    }
+    
+    if (status) {
+        filtered = filtered.filter(s => s.status.toLowerCase() === status.toLowerCase());
+    }
+
+    res.status(200).json(filtered);
 };
 
 const getWorkoutScheduleById = (req, res) => {
