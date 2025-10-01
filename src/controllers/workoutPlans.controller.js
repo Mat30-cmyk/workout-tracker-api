@@ -62,11 +62,59 @@ const createWorkoutPlan = (req, res) => {
 };
 
 const putWorkoutPlan = (req, res) => {
-    res.status(200).json({ message: "PUT /workout-plans/:id - Implementacion pendiente", id: req.params.id, body: req.body });
+    // Commit 4: Actualización COMPLETA con PUT
+    const targetId = String(req.params.id);
+    const index = workoutPlans.findIndex(p => p.id === targetId);
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Plan no encontrado para PUT' });
+    }
+
+    // 🔹 Aseguramos consistencia: si viene "namePlan" lo convertimos a "name"
+    const { userId, namePlan, name } = req.body;
+    const finalName = namePlan || name;
+
+    if (!userId || !finalName) {
+        return res.status(400).json({ error: 'PUT requiere userId y name (o namePlan).' });
+    }
+
+    const updatedPlan = {
+        id: targetId,
+        userId: String(userId),
+        name: finalName, // 👈 siempre guardamos en la propiedad correcta
+        dateCreated: workoutPlans[index].dateCreated, // mantenemos metadata
+        exercisesCount: workoutPlans[index].exercisesCount
+    };
+
+    workoutPlans[index] = updatedPlan;
+    res.status(200).json(updatedPlan);
 };
 
 const patchWorkoutPlan = (req, res) => {
-    res.status(200).json({ message: "PATCH /workout-plans/:id - Implementacion pendiente", id: req.params.id, body: req.body });
+    // Commit 4: Actualización PARCIAL con PATCH
+    const targetId = String(req.params.id);
+    const index = workoutPlans.findIndex(p => p.id === targetId);
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Plan no encontrado para PATCH' });
+    }
+
+    // 🔹 Mapeamos "namePlan" -> "name"
+    const updateData = { ...req.body };
+    if (updateData.namePlan) {
+        updateData.name = updateData.namePlan;
+        delete updateData.namePlan;
+    }
+
+    // 🔹 Mezclamos los datos (PATCH = parcial, no reemplaza todo)
+    const updatedPlan = {
+        ...workoutPlans[index],
+        ...updateData,
+        id: targetId // aseguramos que no cambie
+    };
+
+    workoutPlans[index] = updatedPlan;
+    res.status(200).json(updatedPlan);
 };
 
 const deleteWorkoutPlan = (req, res) => {
