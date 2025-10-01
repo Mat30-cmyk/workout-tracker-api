@@ -83,60 +83,91 @@ const createWorkoutSchedule = (req, res) => {
 };
 
 const putWorkoutSchedule = (req, res) => {
-    // Commit 4: Actualización COMPLETA con PUT
-    const targetId = String(req.params.id); 
-    const index = workoutSchedules.findIndex(s => s.id === targetId);
+  const { id } = req.params;
+  // Extraemos el id de la URL (ejemplo: /workoutSchedules/ws5)
 
-    if (index === -1) {
-        return res.status(404).json({ error: 'Programación no encontrada para PUT' });
-    }
+  const paramId = String(id).trim();
+  // Normalizamos el id recibido (lo convertimos a string y quitamos espacios invisibles)
 
-    const { userId, planId, date, startTime, durationMinutes, status } = req.body;
-    
-    // VALIDACIÓN ESTRICTA: PUT requiere todos los campos clave
-    if (!userId || !planId || !date || !startTime || durationMinutes === undefined) {
-        return res.status(400).json({ error: 'PUT requiere la representación completa: userId, planId, date, startTime, y durationMinutes.' });
-    }
+  console.log('PUT Schedule - paramId:', JSON.stringify(paramId));
+  console.log('PUT Schedule - existing ids:', workoutSchedules.map(s => s.id));
+  // DEBUG: mostramos en consola el id recibido y los ids existentes
 
-    // El PUT reemplaza completamente el objeto
-    const updatedSchedule = {
-        id: targetId, 
-        userId: String(userId),
-        planId: String(planId),
-        date: String(date),
-        startTime: String(startTime),
-        durationMinutes: Number(durationMinutes),
-        status: status || 'scheduled'
-    };
+  const index = workoutSchedules.findIndex(s => String(s.id).trim() === paramId);
+  // Buscamos en el array el índice de la programación que coincida
 
-    workoutSchedules[index] = updatedSchedule;
-    res.status(200).json(updatedSchedule);
+  if (index === -1) {
+    return res.status(404).json({ error: "Programación no encontrada para PUT" });
+  }
+  // Si no se encontró, devolvemos error 404
+
+  const { userId, planId, date, startTime, durationMinutes, status } = req.body;
+  // Desestructuramos los campos del body
+
+  if (!userId || !planId || !date || !startTime || durationMinutes === undefined) {
+    return res.status(400).json({ 
+      error: "PUT requiere userId, planId, date, startTime y durationMinutes"
+    });
+  }
+  // Validamos que PUT siempre reciba todos los campos obligatorios
+
+  const updatedSchedule = {
+    id: workoutSchedules[index].id,       // Conservamos el id original
+    userId: String(userId),               // Nuevo usuario
+    planId: String(planId),               // Nuevo plan
+    date: String(date),                   // Nueva fecha
+    startTime: String(startTime),         // Nueva hora
+    durationMinutes: Number(durationMinutes), // Duración como número
+    status: status || "scheduled",        // Estado por defecto si no mandan
+    updatedAt: new Date().toISOString()   // Fecha de última actualización
+  };
+
+  workoutSchedules[index] = updatedSchedule;
+  // Reemplazamos completamente la programación
+
+  return res.status(200).json(updatedSchedule);
+  // Respondemos con la programación actualizada
 };
 
 const patchWorkoutSchedule = (req, res) => {
-    // Commit 5: Actualización PARCIAL con PATCH (usado para actualizar status)
-    const targetId = String(req.params.id);
-    const index = workoutSchedules.findIndex(s => s.id === targetId);
+  const { id } = req.params;
+  // Extraemos el id de la URL (ejemplo: /workoutSchedules/ws5)
 
-    if (index === -1) {
-        return res.status(404).json({ error: 'Programación no encontrada para PATCH' });
-    }
+  const paramId = String(id).trim();
+  // Normalizamos el id recibido
 
-    // Convertir durationMinutes si viene en el body
-    const patchData = { ...req.body };
-    if (patchData.durationMinutes !== undefined) {
-        patchData.durationMinutes = Number(patchData.durationMinutes);
-    }
-    
-    // Actualización parcial
-    const updatedSchedule = {
-        ...workoutSchedules[index],
-        ...patchData,
-        id: targetId,
-    };
+  console.log('PATCH Schedule - paramId:', JSON.stringify(paramId));
+  console.log('PATCH Schedule - existing ids:', workoutSchedules.map(s => s.id));
+  // DEBUG: mostramos id recibido y los ids existentes
 
-    workoutSchedules[index] = updatedSchedule;
-    res.status(200).json(updatedSchedule);
+  const index = workoutSchedules.findIndex(s => String(s.id).trim() === paramId);
+  // Buscamos la programación que coincida
+
+  if (index === -1) {
+    return res.status(404).json({ error: "Programación no encontrada para PATCH" });
+  }
+  // Si no existe, devolvemos 404
+
+  const cambios = { ...req.body };
+  // Copiamos los cambios enviados
+
+  if (cambios.durationMinutes !== undefined) {
+    cambios.durationMinutes = Number(cambios.durationMinutes);
+  }
+  // Si mandan durationMinutes, lo convertimos a número
+
+  const updatedSchedule = {
+    ...workoutSchedules[index],           // Copiamos la programación existente
+    ...cambios,                           // Sobrescribimos solo lo que mandaron
+    id: workoutSchedules[index].id,       // Protegemos el id
+    updatedAt: new Date().toISOString()   // Guardamos fecha de modificación
+  };
+
+  workoutSchedules[index] = updatedSchedule;
+  // Guardamos el nuevo objeto en el array
+
+  return res.status(200).json(updatedSchedule);
+  // Respondemos con la programación ya actualizada
 };
 
 const deleteWorkoutSchedule = (req, res) => {

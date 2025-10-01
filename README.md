@@ -98,3 +98,30 @@ API RESTful para el seguimiento de entrenamientos.
   "reps": 12,
   "weight": 50
 }
+
+# 🏋️ Workout Tracker API - v1 (Recurso WorkoutSchedule)
+
+## Endpoints de Programación (`/api/v1/workoutSchedules`)
+
+| Método | Ruta | Descripción | Códigos de Estado |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/v1/workoutSchedules` | Obtener la lista de todas las programaciones. | `200` OK |
+| `GET` | `/api/v1/workoutSchedules?userId=1&status=scheduled` | Filtrar por usuario y estado. | `200` OK |
+| `GET` | `/api/v1/workoutSchedules/:id` | Detalle de la programación. | `200` OK, `404` Not Found |
+| `POST` | `/api/v1/workoutSchedules` | **Programar** un plan (Creación). | `201` Created, `400` Bad Request |
+| `PUT` | `/api/v1/workoutSchedules/:id` | Reemplazo COMPLETO (Reprogramación total). | `200` OK, `404` Not Found, `400` Bad Request |
+| `PATCH` | `/api/v1/workoutSchedules/:id` | Actualización PARCIAL (ej. cambiar solo `status` a "completed"). | `200` OK, `404` Not Found |
+| `DELETE` | `/api/v1/workoutSchedules/:id` | Eliminar la programación. | `204` No Content, `404` Not Found |
+
+---
+### Ejemplos de Request/Response
+#### 1. Programar Plan (`POST /api/v1/workoutSchedules`)
+**Request:**
+```json
+{
+  "userId": "1",
+  "planId": "wp1",
+  "date": "2025-10-15",
+  "startTime": "06:00",
+  "durationMinutes": 60
+}
