@@ -72,11 +72,60 @@ const createWorkoutSchedule = (req, res) => {
 };
 
 const putWorkoutSchedule = (req, res) => {
-    res.status(200).json({ message: "PUT /workout-schedules/:id - Implementacion pendiente", id: req.params.id, body: req.body });
+    // Commit 4: Actualización COMPLETA con PUT
+    const targetId = String(req.params.id); 
+    const index = workoutSchedules.findIndex(s => s.id === targetId);
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Programación no encontrada para PUT' });
+    }
+
+    const { userId, planId, date, startTime, durationMinutes, status } = req.body;
+    
+    // VALIDACIÓN ESTRICTA: PUT requiere todos los campos clave
+    if (!userId || !planId || !date || !startTime || durationMinutes === undefined) {
+        return res.status(400).json({ error: 'PUT requiere la representación completa: userId, planId, date, startTime, y durationMinutes.' });
+    }
+
+    // El PUT reemplaza completamente el objeto
+    const updatedSchedule = {
+        id: targetId, 
+        userId: String(userId),
+        planId: String(planId),
+        date: String(date),
+        startTime: String(startTime),
+        durationMinutes: Number(durationMinutes),
+        status: status || 'scheduled'
+    };
+
+    workoutSchedules[index] = updatedSchedule;
+    res.status(200).json(updatedSchedule);
 };
 
 const patchWorkoutSchedule = (req, res) => {
-    res.status(200).json({ message: "PATCH /workout-schedules/:id - Implementacion pendiente", id: req.params.id, body: req.body });
+    // Commit 5: Actualización PARCIAL con PATCH (usado para actualizar status)
+    const targetId = String(req.params.id);
+    const index = workoutSchedules.findIndex(s => s.id === targetId);
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Programación no encontrada para PATCH' });
+    }
+
+    // Convertir durationMinutes si viene en el body
+    const patchData = { ...req.body };
+    if (patchData.durationMinutes !== undefined) {
+        patchData.durationMinutes = Number(patchData.durationMinutes);
+    }
+    
+    // Actualización parcial
+    const updatedSchedule = {
+        ...workoutSchedules[index],
+        ...patchData,
+        id: targetId,
+    };
+
+    workoutSchedules[index] = updatedSchedule;
+    res.status(200).json(updatedSchedule);
 };
 
 const deleteWorkoutSchedule = (req, res) => {
